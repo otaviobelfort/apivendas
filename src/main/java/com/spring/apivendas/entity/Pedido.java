@@ -67,14 +67,11 @@ public class Pedido {
         this.total = total;
     }
 
-    @Override
-    public String toString() {
-        return "Pedido{" +
-                "id=" + id +
-                ", dataPedido=" + dataPedido +
-                ", total=" + total +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Pedido [id=" + id + ", cliente=" + cliente + ", dataPedido=" + dataPedido + ", total=" + total
+				+ ", itens=" + itens + "]";
+	}
+
 }
-© 2022 GitHub, Inc.
 
