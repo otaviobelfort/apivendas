@@ -1,4 +1,4 @@
-package entity;
+package com.spring.apivendas.entity;
 
 import javax.persistence.*;
 
