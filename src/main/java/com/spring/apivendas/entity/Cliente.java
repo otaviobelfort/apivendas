@@ -1,7 +1,10 @@
 package com.spring.apivendas.entity;
 
 import javax.persistence.*;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.List;
 
 @Entity
 @Table( name = "cliente" )
@@ -12,20 +15,21 @@ public class Cliente {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "nome", length = 100)
+    @Column(name = "nome", length = 50)
     private String nome;
-
+    
+    @JsonIgnore
     @OneToMany( mappedBy = "cliente" , fetch = FetchType.LAZY )
-    private Set<Pedido> pedidos;
+    private List<Pedido> pedidos;
 
     public Cliente() {
     }
 
-    public Set<Pedido> getPedidos() {
+    public List<Pedido> getPedidos() {
         return pedidos;
     }
 
-    public void setPedidos(Set<Pedido> pedidos) {
+    public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
     }
 

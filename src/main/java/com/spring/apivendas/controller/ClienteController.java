@@ -46,6 +46,12 @@ public class ClienteController {
 		return ResponseEntity.ok(clientesRepository.save(cliente));
 	}
 	
+	@GetMapping("/deletar/{id}")
+	@ResponseBody
+	public void deletarPorId(@PathVariable Integer id) {
+		clientesRepository.deleteById(id);
+//		return ResponseEntity.ok();
+	}
 	
 
 }
