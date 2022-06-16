@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +54,24 @@ public class ClienteController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	public ResponseEntity buscaTodosClientes() { 
+			return ResponseEntity.ok(clientesRepository.findAll());
+		}
 	
+	@PostMapping("/salvar")
+	@ResponseBody
+	public ResponseEntity buscaClientePorId(@RequestBody Cliente cliente) {
+		return ResponseEntity.ok(clientesRepository.save(cliente));
+	}
+	
+	@DeleteMapping("/deletar/{id}")
+	@ResponseBody
+	public ResponseEntity deletarPorId(@PathVariable Integer id) {
+		if(clientesRepository.findById(id).isPresent()) {
+			clientesRepository.deleteById(id);
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
 
 }

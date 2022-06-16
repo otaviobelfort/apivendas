@@ -17,13 +17,13 @@ public class ApiVendasApplication {
 		SpringApplication.run(ApiVendasApplication.class, args);
 	}
 	
-	@Bean
-	public CommandLineRunner commandLineRunner(@Autowired ClientesRepository clientesRepository) {
-		return args -> {
-			Cliente c = new Cliente(null,"Otávio");
-			clientesRepository.save(c);
-		};
-		
-	}
+//	@Bean
+//	public CommandLineRunner commandLineRunner(@Autowired ClientesRepository clientesRepository) {
+//		return args -> {
+//			Cliente c = new Cliente(null,"Otávio");
+//			clientesRepository.save(c);
+//		};
+//		
+//	}
 
 }
