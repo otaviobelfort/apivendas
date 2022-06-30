@@ -1,7 +1,6 @@
 package com.spring.apivendas.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -14,71 +13,71 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.spring.apivendas.entity.Cliente;
-import com.spring.apivendas.repository.ClientesRepository;
-
+import com.spring.apivendas.entity.Produto;
+import com.spring.apivendas.repository.ProdutoRepository;
 
 @RestController
-@RequestMapping("/clientes")
-public class ClienteController {
+@RequestMapping("/produto")
+public class ProdutoController {
 	
 	@Autowired
-	private ClientesRepository clientesRepository;
-
+	private ProdutoRepository produtoRepository;
+	
 	@GetMapping("/{id}")
-	public Cliente buscaClientePorId(@PathVariable Integer id) { 
-		return clientesRepository
+	public Produto buscaProdutoPorId(@PathVariable Integer id) { 
+		return produtoRepository
 				.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(
 						HttpStatus.NOT_FOUND,
-						"Cliente não encontrado!"));	
+						"Produto não encontrado!"));	
 	}
 	
 	@PostMapping("/salvar")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente  buscaClientePorId(@RequestBody Cliente cliente) {
-		return clientesRepository.save(cliente);
+	public Produto  buscaClientePorId(@RequestBody Produto produto) {
+		return produtoRepository.save(produto);
 	}
 	
 	@DeleteMapping("/deletar/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deletarPorId(@PathVariable Integer id) {
-		if(clientesRepository.findById(id).isPresent()) {
-			clientesRepository.deleteById(id);
+	public void deletarProdutoPorId(@PathVariable Integer id) {
+		if(produtoRepository.findById(id).isPresent()) {
+			produtoRepository.deleteById(id);
 		}
 	}
 	
 	@PutMapping("/atualizar/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-    public void atualizar( @PathVariable Integer id, @RequestBody Cliente cliente ){{
+    public void atualizar( @PathVariable Integer id, @RequestBody Produto produto ){{
                 
-    	clientesRepository.findById(id)
-                           .map( clienteExistente -> {
-                            cliente.setId(clienteExistente.getId());
-                            clientesRepository.save(cliente);
-                            return clienteExistente;})
+    	produtoRepository.findById(id)
+                           .map( produtoExistente -> {
+                            produto.setId(produtoExistente.getId());
+                            produtoRepository.save(produto);
+                            return produtoExistente;})
                            
                            .orElseThrow(() -> new ResponseStatusException(
                         		           HttpStatus.NOT_FOUND,
-                                          "Cliente não foi encontrado"));
+                                          "Produto não foi encontrado"));
                             }
 	}
 	
 	@GetMapping
-	public List<Cliente> find(Cliente filtro) {
+	public List<Produto> find(Produto filtro) {
 		ExampleMatcher matcher = ExampleMatcher.matching()
 												.withIgnoreCase()
 												.withStringMatcher(
 														ExampleMatcher.StringMatcher.CONTAINING);
-		Example<Cliente> example = Example.of(filtro,matcher);
-		List<Cliente> listaClientes = clientesRepository.findAll(example);
-		return listaClientes;
+		Example<Produto> example = Example.of(filtro,matcher);
+		List<Produto> listaProdutos = produtoRepository.findAll(example);
+		return listaProdutos;
 		
 	}
 	
+	
+
 }
