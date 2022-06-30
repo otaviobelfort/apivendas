@@ -67,7 +67,7 @@ public class ClienteController {
                            
                            .orElseThrow(() -> new ResponseStatusException(
                         		           HttpStatus.NOT_FOUND,
-                                          "Cliente não foi encontrado"));
+                                          "Cliente não foi encontrado!"));
                             }
 	}
 	
