@@ -2,6 +2,7 @@ package com.spring.apivendas.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -12,6 +13,7 @@ import com.spring.apivendas.entity.Cliente;
 import com.spring.apivendas.entity.ItemPedido;
 import com.spring.apivendas.entity.Pedido;
 import com.spring.apivendas.entity.Produto;
+import com.spring.apivendas.entity.dto.DetalhesItemPedidoDTO;
 import com.spring.apivendas.entity.dto.ItemPedidoDTO;
 import com.spring.apivendas.entity.dto.PedidoDTO;
 import com.spring.apivendas.repository.ClientesRepository;
@@ -91,6 +93,15 @@ public class PedidoServiceImpl implements PedidoService{
 					itemPedido.setProduto(produto);
 					return itemPedido;
 				}).collect(Collectors.toList());
+	}
+
+	@Override
+	public Optional<Pedido> detalhesPedido(Integer id) {
+		DetalhesItemPedidoDTO pedidoItem;
+		
+
+
+		return pedidosRepository.findByFetchItens(id);
 	}
 	
 	
