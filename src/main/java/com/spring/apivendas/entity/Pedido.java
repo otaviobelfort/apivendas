@@ -1,8 +1,10 @@
 package com.spring.apivendas.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.spring.apivendas.enums.StatusPedido;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,10 +32,15 @@ public class Pedido {
 
     @Column(name = "data_pedido")
     private LocalDate dataPedido;
-
+    
+    @NotNull
     @Column(name = "total", precision = 20, scale = 2)
     private BigDecimal total;
-
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name="status")
+    private StatusPedido statusPedido;
+    
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;
 

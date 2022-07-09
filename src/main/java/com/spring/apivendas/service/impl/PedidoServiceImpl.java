@@ -16,15 +16,18 @@ import com.spring.apivendas.entity.Produto;
 import com.spring.apivendas.entity.dto.DetalhesItemPedidoDTO;
 import com.spring.apivendas.entity.dto.ItemPedidoDTO;
 import com.spring.apivendas.entity.dto.PedidoDTO;
+import com.spring.apivendas.enums.StatusPedido;
 import com.spring.apivendas.repository.ClientesRepository;
 import com.spring.apivendas.repository.ItensPedidoRepository;
 import com.spring.apivendas.repository.PedidosRepository;
 import com.spring.apivendas.repository.ProdutoRepository;
 import com.spring.apivendas.service.PedidoService;
 import com.spring.apivendas.service.impl.exception.ApiVendasException;
+import com.spring.apivendas.service.impl.exception.PedidoNaoEncontradoException;
 
 @Service
 public class PedidoServiceImpl implements PedidoService{
+	
 	
 	private PedidosRepository pedidosRepository;
 	private ProdutoRepository produtoRepository;
@@ -61,6 +64,7 @@ public class PedidoServiceImpl implements PedidoService{
 		pedido.setTotal(pedidoDTO.getTotal());
 		pedido.setDataPedido(LocalDate.now());
 		pedido.setCliente(cliente);
+		pedido.setStatusPedido(StatusPedido.REALIZADO);
 		
 		
 		listaItensPedido = salvarItens(pedido, pedidoDTO.getItens());
@@ -96,12 +100,21 @@ public class PedidoServiceImpl implements PedidoService{
 	}
 
 	@Override
-	public Optional<Pedido> detalhesPedido(Integer id) {
-		DetalhesItemPedidoDTO pedidoItem;
-		
+	public Optional<Pedido> detalhesPedido(Integer id) {		
 
 
 		return pedidosRepository.findByFetchItens(id);
+	}
+
+	@Override
+	@Transactional
+	public void atualizarStatus(Integer id, StatusPedido statusPedido) {
+		pedidosRepository
+						.findById(id)
+						.map( pedido -> {
+							pedido.setStatusPedido(statusPedido);
+							return pedidosRepository.save(pedido);
+						}).orElseThrow(() -> new PedidoNaoEncontradoException() );
 	}
 	
 	

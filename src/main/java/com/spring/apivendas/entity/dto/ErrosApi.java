@@ -10,6 +10,11 @@ public class ErrosApi {
 	public ErrosApi(String messageErro) {
 		this.erros = Arrays.asList(messageErro);
 	}
+	
+	public ErrosApi(List<String> erros) {
+		this.erros = erros;
+	}
+		
 		
 	
 	public List<String> getErros() {

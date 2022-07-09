@@ -2,6 +2,8 @@ package com.spring.apivendas.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -38,7 +40,7 @@ public class ProdutoController {
 	
 	@PostMapping("/salvar")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Produto  buscaClientePorId(@RequestBody Produto produto) {
+	public Produto  buscaClientePorId(@RequestBody @Valid Produto produto) {
 		return produtoRepository.save(produto);
 	}
 	
@@ -52,7 +54,7 @@ public class ProdutoController {
 	
 	@PutMapping("/atualizar/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-    public void atualizar( @PathVariable Integer id, @RequestBody Produto produto ){{
+    public void atualizar( @PathVariable Integer id, @RequestBody @Valid Produto produto ){{
                 
     	produtoRepository.findById(id)
                            .map( produtoExistente -> {

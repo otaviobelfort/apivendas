@@ -3,6 +3,8 @@ package com.spring.apivendas.entity;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,7 +31,8 @@ public class ItemPedido {
     @ManyToOne
     @JoinColumn(name = "produto_id")
     private Produto produto;
-
+    
+    @NotNull(message = "Campo 'quantidade' é obrigatorio!")
     @Column
     private Integer quantidade;
 

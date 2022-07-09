@@ -6,11 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +23,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.spring.apivendas.entity.ItemPedido;
 import com.spring.apivendas.entity.Pedido;
+import com.spring.apivendas.entity.dto.AtualizarStatusPedidoDTO;
 import com.spring.apivendas.entity.dto.DetalhesItemPedidoDTO;
 import com.spring.apivendas.entity.dto.DetalhesPedidoDTO;
 import com.spring.apivendas.entity.dto.PedidoDTO;
+import com.spring.apivendas.enums.StatusPedido;
 import com.spring.apivendas.service.PedidoService;
 
 @RestController
@@ -39,7 +43,7 @@ public class PedidoController {
 	
 	@PostMapping("/salvar")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Integer salvarPedido(@RequestBody PedidoDTO pedidoDTO) {
+	public Integer salvarPedido(@RequestBody @Valid PedidoDTO pedidoDTO) {
 		 Pedido pedido = pedidoService.salvar(pedidoDTO);
 		return pedido.getId();
 	}
@@ -53,6 +57,18 @@ public class PedidoController {
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado para o ID: "+id));
 	}
 	
+	/*
+	 * Atualizar status
+	 */
+	@PatchMapping(path = "/{id}", consumes = "application/json")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void atualizarStatusPedido(@PathVariable Integer id, 
+									  @RequestBody AtualizarStatusPedidoDTO status) {
+		
+		String novoStatus = status.getNovoStatus();
+		pedidoService.atualizarStatus(id, StatusPedido.valueOf(novoStatus));
+	}
+	
 	private DetalhesPedidoDTO converterPedido(Pedido pedido) {
 		return DetalhesPedidoDTO
 								.builder()
@@ -61,6 +77,7 @@ public class PedidoController {
 								.cpf(pedido.getCliente().getCpf())
 								.nome(pedido.getCliente().getNome())
 								.total(pedido.getTotal())
+								.status(pedido.getStatusPedido().name())
 								.itensPedido(conveterItemPedido(pedido.getItens()))
 								.build();
 								

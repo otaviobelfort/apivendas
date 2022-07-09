@@ -1,17 +1,15 @@
 package com.spring.apivendas.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.spring.apivendas.entity.dto.DetalhesItemPedidoDTO;
-import com.spring.apivendas.entity.dto.DetalhesPedidoDTO;
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -28,8 +26,11 @@ public class Cliente {
     private Integer id;
 
     @Column(name = "nome", length = 50)
+    @NotEmpty(message="Campo 'nome' é obrigatório!")
     private String nome;
     
+    @NotEmpty(message="Campo 'CPF' é obrigatório!")
+    @CPF(message = "Informe um CPF válido." )
     @Column(name = "cpf", length = 11)
     private String cpf;
     
